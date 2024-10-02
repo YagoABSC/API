@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa com Endereços Próximos ao Senac Lapa Tito</title>
+  <style>
+    /* Definindo altura e largura do mapa */
+    #map {
+      height: 700px;
+      width: 100%;
+    }
+  </style>
+  <script>
+    // Função para inicializar o mapa
+    function initMap() {
+      // Coordenadas do Senac Lapa Tito
+      const senacLapaTito = { lat: -23.527139, lng: -46.703708 };
+
+      // Criação do mapa centralizado no Senac Lapa Tito
+      const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: senacLapaTito
+      });
+
+      // Endereços próximos ao Senac Lapa Tito
+      const locations = [
+        { position: { lat: -23.528113, lng: -46.705589 }, title: 'Parque Villa-Lobos' },
+        { position: { lat: -23.525586, lng: -46.703826 }, title: 'Shopping Villa-Lobos' },
+        { position: { lat: -23.530067, lng: -46.700890 }, title: 'Estação Lapa CPTM' },
+        { position: { lat: -23.526205, lng: -46.706825 }, title: 'Biblioteca Parque Villa-Lobos' }
+      ];
+
+      // Adicionar marcador para o Senac Lapa Tito
+      const markerSenac = new google.maps.Marker({
+        position: senacLapaTito,
+        map: map,
+        title: 'Senac Lapa Tito'
+      });
+
+      // Adicionar InfoWindow para o Senac Lapa Tito
+      const infoWindowSenac = new google.maps.InfoWindow({
+        content: '<h3>Senac Lapa Tito</h3><p>Endereço: R. Tito, 54 - Vila Romana, São Paulo - SP</p>'
+      });
+
+      markerSenac.addListener('click', function() {
+        infoWindowSenac.open(map, markerSenac);
+      });
+
+      // Adicionar marcadores para cada localização próxima
+      locations.forEach(location => {
+        const marker = new google.maps.Marker({
+          position: location.position,
+          map: map,
+          title: location.title
+        });
+
+        // Adicionar InfoWindow para cada local
+        const infoWindow = new google.maps.InfoWindow({
+          content: `<h3>${location.title}</h3>`
+        });
+
+        marker.addListener('click', function() {
+          infoWindow.open(map, marker);
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <h1>Endereços Próximos ao Senac Lapa Tito</h1>
+  <div id="map"></div>
+
+  <!-- Carregar a API do Google Maps com sua chave de API -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGGSfJVZ53PXHe4x8RfVrond5IdhLg7W8&callback=initMap"></script>
+</body>
+</html>
